@@ -18,17 +18,21 @@ LINUX_VARIANT="debian10" #  virt-install --os-variant list
 
 if [ $# -lt 1 ]; then
     cat <<EOF
-Usage: $0 <GUEST_NAME> [MAC_ADDRESS]"
+Usage: $0 GUEST_VIRTUAL_MACHINE_NAME [MAC_ADDRESS]"
 
-  GUEST_NAME    used as guest hostname, name of the VM and image file name
-  MAC_ADDRESS   allows to use specific MAC on the network, this is helpful
-                when DHCP server expects your guest to have predefined MAC
+  GUEST_VIRTUAL_MACHINE_NAME
+    The hostname, name, and storage image file name for the virtual machine.
+  MAC_ADDRESS
+    Use predefined MAC (Media Access Control) address on the network.
+    Useful when DHCP server expects your guest to have predefined MAC address.
 
 Examples:
 
-  $0 backend 52:54:00:bf:b3:86 # create guest named "backend" with given MAC_ADDRESS
+  # Create guest virtual machine named "backend" with predefined MAC_ADDRESS.
+  $0 backend 52:54:00:bf:b3:86
 
-  $0 wow # create guest named "wow" with random MAC_ADDRESS
+  # Create guest virtual machine named "frontend" with random MAC_ADDRESS.
+  $0 frontend
 EOF
     exit 1
 fi
@@ -39,12 +43,14 @@ if [ $# -eq 2 ]; then
 fi
 
 # Fetch SSH key from github.
-wget -q https://github.com/sheeeng.keys -O postinst/authorized_keys
+wget --quiet \
+    --output-document=postinst/authorized_keys \
+    https://github.com/sheeeng.keys
 
 # Create tarball with some stuff we would like to install into the system.
 tar cvfz postinst.tar.gz postinst
 
-#     --disk size=20,path=~${HOME}/.local/share/libvirt/images/${1}.img,bus=virtio,cache=none \
+# -disk size=20,path=~${HOME}/.local/share/libvirt/images/${1}.qcow2,bus=virtio,cache=none,sparse=yes,format=qcow2 \
 
 set -x
 virt-install \

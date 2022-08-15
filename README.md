@@ -73,4 +73,13 @@ iface br0 inet dhcp
 
 More Info
 ---------
-* https://www.debian.org/releases/stable/example-preseed.txt
+- https://www.debian.org/releases/stable/example-preseed.txt
+
+## Direnv
+
+- Install [direnv](https://direnv.net/docs/installation.html).
+- Create a file named `.envrc` and place below content into it.
+
+```text
+export GUEST_VIRTUAL_MACHINE_NAME=Debbie10
+```
