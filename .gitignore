@@ -1,2 +1,3 @@
 postinst/authorized_keys
+postinst.tar.gz
 .envrc
